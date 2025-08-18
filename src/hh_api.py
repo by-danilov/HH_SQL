@@ -3,24 +3,13 @@ from typing import List, Dict, Any
 
 
 class HHApi:
-    """
-    Класс для взаимодействия с API hh.ru.
-    Позволяет получать информацию о компаниях и их вакансиях.
-    """
     def __init__(self, company_names: List[str]):
-        """
-        Инициализирует API-клиент.
-
-        :param company_names: Список названий компаний для поиска.
-        """
         self.base_url = "https://api.hh.ru/"
         self.company_names = company_names
         self.companies = self._get_companies_id()
 
+
     def _get_companies_id(self) -> Dict[str, Any]:
-        """
-        Получает ID компаний по их названиям.
-        """
         companies_data = {}
         for name in self.company_names:
             response = requests.get(f"{self.base_url}employers", params={'text': name, 'per_page': 1})
@@ -35,10 +24,8 @@ class HHApi:
                     }
         return companies_data
 
+
     def get_vacancies(self) -> Dict[str, List[Dict[str, Any]]]:
-        """
-        Получает вакансии для каждой компании из списка.
-        """
         vacancies_data = {}
         for company_name, company_info in self.companies.items():
             company_id = company_info['id']
@@ -59,4 +46,3 @@ class HHApi:
                     break
             vacancies_data[company_name] = vacancies
         return vacancies_data
-    

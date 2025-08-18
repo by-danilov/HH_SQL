@@ -3,22 +3,12 @@ from typing import List, Dict, Any
 
 
 class DBManager:
-    """
-    Класс для управления данными в базе данных PostgreSQL.
-    """
     def __init__(self, db_name: str, params: dict):
-        """
-        Инициализирует менеджер, устанавливая соединение с БД.
-        :param db_name: Имя базы данных.
-        :param params: Параметры подключения к БД.
-        """
         self.db_name = db_name
         self.params = params
 
+
     def get_companies_and_vacancies_count(self) -> List[Dict[str, Any]]:
-        """
-        Получает список всех компаний и количество вакансий у каждой компании.
-        """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
                 cur.execute("""
@@ -33,11 +23,8 @@ class DBManager:
                     results.append({"company_name": row[0], "vacancies_count": row[1]})
                 return results
 
+
     def get_all_vacancies(self) -> List[Dict[str, Any]]:
-        """
-        Получает список всех вакансий с указанием названия компании,
-        названия вакансии, зарплаты и ссылки на вакансию.
-        """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
                 cur.execute("""
@@ -57,10 +44,8 @@ class DBManager:
                     })
                 return results
 
+
     def get_avg_salary(self) -> float:
-        """
-        Получает среднюю зарплату по вакансиям.
-        """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
                 cur.execute("""
@@ -71,10 +56,8 @@ class DBManager:
                 avg_salary = cur.fetchone()[0]
                 return float(avg_salary) if avg_salary else 0.0
 
+
     def get_vacancies_with_higher_salary(self) -> List[Dict[str, Any]]:
-        """
-        Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям.
-        """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
                 cur.execute("""
@@ -99,12 +82,9 @@ class DBManager:
                     })
                 return results
 
+
     def get_vacancies_with_keyword(self, keyword: str) -> List[Dict[str, Any]]:
-        """
-        Получает список всех вакансий, в названии которых содержатся
-        переданные в метод слова.
-        :param keyword: Ключевое слово для поиска.
-        """
+
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
                 cur.execute(
