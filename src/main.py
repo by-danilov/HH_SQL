@@ -9,6 +9,9 @@ import psycopg2
 
 
 def insert_data_to_db(db_name: str, params: dict, hh_api_data: Dict[str, Any]) -> None:
+    """
+    Загружает данные о компаниях и вакансиях в базу данных.
+    """
     conn = None
     try:
         conn = psycopg2.connect(dbname=db_name, **params)
@@ -30,7 +33,7 @@ def insert_data_to_db(db_name: str, params: dict, hh_api_data: Dict[str, Any]) -
                 salary_to = salary['to'] if salary and salary['to'] else None
 
                 cur.execute(
-                    "INSERT INTO vacancies (vacancy_id, company_id, vacancy_name, salary_from, salary_to, url) VALUES (%s, %s, %s, %s, %s, %s)",
+                    "INSERT INTO vacancies (vacancy_id, company_id, vacancy_name, salary_from, salary_to, url) VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (vacancy_id) DO NOTHING",
                     (vacancy['id'], company_id, vacancy['name'], salary_from, salary_to, vacancy['alternate_url'])
                 )
 
@@ -46,6 +49,9 @@ def insert_data_to_db(db_name: str, params: dict, hh_api_data: Dict[str, Any]) -
 
 
 def user_interaction(db_manager: DBManager) -> None:
+    """
+    Интерактивный интерфейс для работы с базой данных.
+    """
     while True:
         print("\nВыберите действие:")
         print("1. Показать количество вакансий у каждой компании")
@@ -107,6 +113,9 @@ def user_interaction(db_manager: DBManager) -> None:
 
 
 def main() -> None:
+    """
+    Основная функция программы, которая запускает все процессы.
+    """
     load_dotenv()
     db_params = {
         "user": os.getenv("DB_USER"),

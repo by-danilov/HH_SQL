@@ -1,11 +1,11 @@
 import psycopg2
 from psycopg2 import sql
-import os
-from dotenv import load_dotenv
 
 
-def create_database(db_name: str, params: dict):
-    """Создает новую базу данных."""
+def create_database(db_name: str, params: dict) -> None:
+    """
+    Создает новую базу данных в PostgreSQL.
+    """
     conn = None
     try:
         conn = psycopg2.connect(dbname='postgres', **params)
@@ -26,8 +26,10 @@ def create_database(db_name: str, params: dict):
             conn.close()
 
 
-def create_tables(db_name: str, params: dict):
-    """Создает таблицы `companies` и `vacancies`."""
+def create_tables(db_name: str, params: dict) -> None:
+    """
+    Создает таблицы `companies` и `vacancies` в указанной базе данных.
+    """
     conn = None
     try:
         conn = psycopg2.connect(dbname=db_name, **params)
@@ -62,16 +64,3 @@ def create_tables(db_name: str, params: dict):
         if conn is not None:
             cur.close()
             conn.close()
-
-
-if __name__ == '__main__':
-    load_dotenv()
-    db_params = {
-        "user": os.getenv("DB_USER"),
-        "password": os.getenv("DB_PASSWORD"),
-        "host": os.getenv("DB_HOST"),
-    }
-    db_name = os.getenv("DB_NAME")
-
-    create_database(db_name, db_params)
-    create_tables(db_name, db_params)
