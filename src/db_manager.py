@@ -6,7 +6,7 @@ class DBManager:
     """
     Класс для управления данными в базе данных PostgreSQL.
     """
-    def __init__(self, db_name: str, params: dict):
+    def __init__(self, db_name: str, params: Dict[str, Any]):
         """
         Инициализирует менеджер, устанавливая соединение с БД.
         :param db_name: Имя базы данных.

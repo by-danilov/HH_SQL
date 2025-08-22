@@ -92,7 +92,6 @@ class TestDBManager(unittest.TestCase):
         Тестирует метод get_vacancies_with_higher_salary.
         """
         result = self.db_manager.get_vacancies_with_higher_salary()
-        # Проверка, что результат является списком
         self.assertIsInstance(result, list)
 
     def test_get_vacancies_with_keyword(self):

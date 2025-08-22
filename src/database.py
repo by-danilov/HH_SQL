@@ -1,8 +1,9 @@
 import psycopg2
 from psycopg2 import sql
+from typing import Dict, Any
 
 
-def create_database(db_name: str, params: dict) -> None:
+def create_database(db_name: str, params: Dict[str, Any]) -> None:
     """
     Создает новую базу данных в PostgreSQL.
     """
@@ -26,7 +27,7 @@ def create_database(db_name: str, params: dict) -> None:
             conn.close()
 
 
-def create_tables(db_name: str, params: dict) -> None:
+def create_tables(db_name: str, params: Dict[str, Any]) -> None:
     """
     Создает таблицы `companies` и `vacancies` в указанной базе данных.
     """
