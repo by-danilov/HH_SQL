@@ -8,7 +8,7 @@ from src.db_manager import DBManager
 import psycopg2
 
 
-def insert_data_to_db(db_name: str, params: dict, hh_api_data: Dict[str, Any]) -> None:
+def insert_data_to_db(db_name: str, params: Dict[str, Any], hh_api_data: Dict[str, Any]) -> None:
     """
     Загружает данные о компаниях и вакансиях в базу данных.
     """
@@ -33,7 +33,7 @@ def insert_data_to_db(db_name: str, params: dict, hh_api_data: Dict[str, Any]) -
                 salary_to = salary['to'] if salary and salary['to'] else None
 
                 cur.execute(
-                    "INSERT INTO vacancies (vacancy_id, company_id, vacancy_name, salary_from, salary_to, url) VALUES (%s, %s, %s, %s, %s, %s)",
+                    "INSERT INTO vacancies (vacancy_id, company_id, vacancy_name, salary_from, salary_to, url) VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (vacancy_id) DO NOTHING",
                     (vacancy['id'], company_id, vacancy['name'], salary_from, salary_to, vacancy['alternate_url'])
                 )
 
@@ -125,18 +125,18 @@ def main() -> None:
     db_name = os.getenv("DB_NAME")
 
     # Создание БД и загрузка данных (раскомментировать для первого запуска)
-    create_database(db_name, db_params)
-    create_tables(db_name, db_params)
-    company_names = [
-        "ООО Синара-Девелопмент", "ООО Бантер Групп", "ПАО МегаФон", "Петрович, Строительный Торговый Дом",
-        "ООО Урс Групп", "ООО Брусника", "АО Уральский завод гражданской", "ВИТА. Офис",
-        "ТК Интеграл+", "ООО АДС-ЭЛЕКТРО"
-    ]
-    hh_api_client = HHApi(company_names)
-    companies_data = hh_api_client.companies
-    vacancies_data = hh_api_client.get_vacancies()
-    all_data = {"companies": companies_data, "vacancies": vacancies_data}
-    insert_data_to_db(db_name, db_params, all_data)
+    # create_database(db_name, db_params)
+    # create_tables(db_name, db_params)
+    # company_names = [
+    #     "ООО Синара-Девелопмент", "ООО Бантер Групп", "ПАО МегаФон", "Петрович, Строительный Торговый Дом",
+    #     "ООО Урс Групп", "ООО Брусника", "АО Уральский завод гражданской", "ВИТА. Офис",
+    #     "ТК Интеграл+", "ООО АДС-ЭЛЕКТРО"
+    # ]
+    # hh_api_client = HHApi(company_names)
+    # companies_data = hh_api_client.companies
+    # vacancies_data = hh_api_client.get_vacancies()
+    # all_data = {"companies": companies_data, "vacancies": vacancies_data}
+    # insert_data_to_db(db_name, db_params, all_data)
 
     db_manager = DBManager(db_name, db_params)
     user_interaction(db_manager)

@@ -6,7 +6,7 @@ class DBManager:
     """
     Класс для управления данными в базе данных PostgreSQL.
     """
-    def __init__(self, db_name: str, params: dict):
+    def __init__(self, db_name: str, params: Dict[str, Any]):
         """
         Инициализирует менеджер, устанавливая соединение с БД.
         :param db_name: Имя базы данных.
@@ -17,7 +17,7 @@ class DBManager:
 
     def get_companies_and_vacancies_count(self) -> List[Dict[str, Any]]:
         """
-        Получает список всех компаний и количество вакансий у каждой компании.
+        Получает список всех компаний и количество вакансий у каждой.
         """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
@@ -36,7 +36,7 @@ class DBManager:
     def get_all_vacancies(self) -> List[Dict[str, Any]]:
         """
         Получает список всех вакансий с указанием названия компании,
-        названия вакансии, зарплаты и ссылки на вакансию.
+        вакансии, зарплаты и ссылки на вакансию.
         """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
@@ -73,7 +73,7 @@ class DBManager:
 
     def get_vacancies_with_higher_salary(self) -> List[Dict[str, Any]]:
         """
-        Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям.
+        Получает список всех вакансий, у которых зарплата выше средней.
         """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:
             with conn.cursor() as cur:
@@ -101,8 +101,7 @@ class DBManager:
 
     def get_vacancies_with_keyword(self, keyword: str) -> List[Dict[str, Any]]:
         """
-        Получает список всех вакансий, в названии которых содержатся
-        переданные в метод слова.
+        Получает список вакансий, в названии которых есть ключевое слово.
         :param keyword: Ключевое слово для поиска.
         """
         with psycopg2.connect(dbname=self.db_name, **self.params) as conn:

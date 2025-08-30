@@ -5,12 +5,10 @@ from typing import List, Dict, Any
 class HHApi:
     """
     Класс для взаимодействия с API hh.ru.
-    Позволяет получать информацию о компаниях и их вакансиях.
     """
     def __init__(self, company_names: List[str]):
         """
         Инициализирует API-клиент.
-
         :param company_names: Список названий компаний для поиска.
         """
         self.base_url = "https://api.hh.ru/"
@@ -59,4 +57,3 @@ class HHApi:
                     break
             vacancies_data[company_name] = vacancies
         return vacancies_data
-    
